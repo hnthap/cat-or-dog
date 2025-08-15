@@ -1,0 +1,19 @@
+.image-card {
+    height: 300px;
+    width: 300px;
+    margin: auto;
+    border: 1px solid hsl(0, 0%, 90%);
+    padding: 0.5rem;
+    border-radius: 2%;
+    background-color: hsl(0, 0%, 10%);
+    /* overflow: hidden; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-card img {
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+}
