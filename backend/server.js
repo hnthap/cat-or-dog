@@ -3,25 +3,7 @@ const express = require("express");
 const multer = require("multer");
 const sharp = require("sharp");
 
-// TODO: Use dotenv-safe to manage environment variables
-// TODO: Use logging library instead of console.log
-// TODO: Use queue system to process requests asynchronously
-// TODO: Use express-validator or Joi to validate request data
-// TODO: Add rate limiting with express-rate-limit
-// TODO: Use ndarray for matrix operations in preprocess()
-// TODO: Add unit tests for critical functions like infer() and preprocess()
-// TODO: Mock OVMS responses for testing purposes, under different scenarios,
-// e.g., success, failure, invalid response
-// TODO: Add API documentation using Swagger or Postman
-// TODO: Validate OVMS_* environment variables at startup
-// TODO: Remember to test preprocess() with edge cases, such as
-// (1) extremely small or large images,
-// (2) image with unsupported format,
-// (3) corrupted image files.
-// TODO: Make startup log message more descriptive
-// e.g., "development" or "production" mode, OVMS host and port, etc.
-
-require("dotenv-safe").config();
+require("dotenv-safe").config({ allowEmptyValues: true });
 
 // Backend server port
 const PORT = 3001;
@@ -52,13 +34,13 @@ function main() {
     const app = express();
     const upload = multer({
         storage: multer.memoryStorage(),
-        limits: { fileSize: 5 * 1024 * 1024 }, // 5 MiB limit
+        limits: { fileSize: MAX_FILE_SIZE },
         fileFilter: (req, file, cb) => {
             if (!file.mimetype.startsWith("image/")) {
                 return cb(new Error("Only image files are allowed."));
             }
             cb(null, true);
-        }
+        },
     });
 
     app.use(cors({ origin: FRONTEND_ORIGIN }));
@@ -68,16 +50,14 @@ function main() {
     app.use((err, req, res, next) => {
         console.error(err.stack);
         res.status(500).json({ error: "Internal server error." });
-    })
+    });
 
     app.post("/v1/infer", upload.single("image"), async (req, res) => {
         if (!req.file) {
-            return res
-                .status(400)
-                .json({
-                    error: "Bad request error.",
-                    details: "No file uploaded.",
-                });
+            return res.status(400).json({
+                error: "Bad request error.",
+                details: "No file uploaded.",
+            });
         }
         try {
             const output = await infer(req.file.buffer);
@@ -87,12 +67,10 @@ function main() {
         } catch (error) {
             console.error(error);
             if (error.message.includes("Unsupported image format")) {
-                return res
-                    .status(400)
-                    .json({
-                        error: "Bad request error.",
-                        details: error.message,
-                    });
+                return res.status(400).json({
+                    error: "Bad request error.",
+                    details: error.message,
+                });
             }
             res.status(500).json({
                 error: "Internal server error.",
@@ -102,14 +80,13 @@ function main() {
     });
 
     app.listen(PORT, () => {
-        // TODO: Use log file instead
         console.log(`Backend server listening on port ${PORT}`);
     });
 }
 
 /**
  * Performs inference on the provided image buffer using OpenVINO Model Server.
- * @param {Buffer} imageBuffer 
+ * @param {Buffer} imageBuffer
  * @returns Inference result if success, otherwise, throws an error.
  */
 async function infer(imageBuffer) {
@@ -141,7 +118,7 @@ async function infer(imageBuffer) {
 
 /**
  * Preprocess the image buffer for inference.
- * @param {Buffer} imageBuffer 
+ * @param {Buffer} imageBuffer
  * @returns Preprocessed image data as an Array.
  */
 async function preprocess(imageBuffer) {
@@ -153,7 +130,10 @@ async function preprocess(imageBuffer) {
         );
     }
     if (!SUPPORTED_FORMATS.includes(format)) {
-        throw new Error(`Unsupported image format: ${format}`);
+        throw new Error(
+            `Unsupported image format: ${format}. ` +
+                `Supported formats are: ${SUPPORTED_FORMATS.join(", ")}.`
+        );
     }
     const scale = RESIZE_SCALE / Math.min(width, height);
     const newWidth = Math.round(width * scale);

@@ -9,12 +9,12 @@ The AI model used in this project was trained and evaluated using the code from 
 ## Table of Contents
 1. [Features](#features)
 2. [Tech Stack](#tech-stack)
-3. **[Getting Started](#getting-started)**
+3. **[🔰 Getting Started](#getting-started)**
 4. [Project Structure](#project-structure)
 5. [Endpoints](#endpoints)
-6. **[Development](#development)**
+6. **[⚙️ Development](#development)**
 7. [Testing](#testing)
-8. **[Future Improvements](#future-improvements)**
+8. **[⭐ Future Improvements](#future-improvements)**
 9. [Contributing](#contributing)
 10. [License](#license)
 11. [Acknowledgments](#acknowledgments)
@@ -57,7 +57,7 @@ The AI model used in this project was trained and evaluated using the code from 
 
 ----
 
-## **Getting Started**
+## **🔰 Getting Started**
 
 ### **Prerequisites**
 
@@ -73,7 +73,7 @@ The AI model used in this project was trained and evaluated using the code from 
    ```
 
 2. **Environment Variables**:
-   Create a `.env` file in the root directory and configure the following variables:
+   Create a `.env` file in the [backend](./backend/) directory and configure the following variables:
    ```env
    OVMS_HOSTNAME=model-server
    OVMS_PORT=8000
@@ -143,7 +143,7 @@ The AI model used in this project was trained and evaluated using the code from 
 
 ----
 
-## **Development**
+## **⚙️ Development**
 
 ### **Frontend**
 
@@ -196,30 +196,32 @@ Frontend tests are not yet available.
 
 ----
 
-## **Future Improvements**
+## **⭐ Future Improvements**
 
 ### **General**
 
-- Deploy a Live Demo
+- [ ] Deploy a Live Demo
 
 ### **Frontend**
 
-- Add tests
+- [ ] Drag and Drop image into view
+- [ ] Use Toasts instead of alert()
+- [ ] Add tests
 
 ### **Backend**
 
-- Use dotenv-safe to manage environment variables
-- Use logging library instead of console.log
-- Use queue system to process requests asynchronously
-- Use express-validator or Joi to validate request data
-- Add rate limiting with express-rate-limit
-- Use ndarray for matrix operations in preprocess()
-- Add unit tests for critical functions like infer() and preprocess()
-- Mock OVMS responses for testing purposes, under different scenarios, e.g., success, failure, invalid response
-- Add API documentation using Swagger or Postman
-- Validate `OVMS_*` environment variables at startup
-- Remember to test preprocess() with edge cases, such as (1) extremely small or large images, (2) image with unsupported format, (3) corrupted image files
-- Make startup log message more descriptive, e.g., "development" or "production" mode, OVMS host and port, etc.
+- [x] Use dotenv-safe to manage environment variables
+- [ ] Use logging library instead of console.log
+- [ ] Use queue system to process requests asynchronously
+- [ ] Use express-validator or Joi to validate request data
+- [ ] Add rate limiting with express-rate-limit
+- [ ] Use ndarray for matrix operations in preprocess()
+- [ ] Add unit tests for critical functions like infer() and preprocess()
+- [ ] Mock OVMS responses for testing purposes, under different scenarios, e.g., success, failure, invalid response
+- [ ] Add API documentation using Swagger or Postman
+- [ ] Validate `OVMS_*` environment variables at startup
+- [ ] Remember to test preprocess() with edge cases, such as (1) extremely small or large images, (2) image with unsupported format, (3) corrupted image files
+- [ ] Make startup log message more descriptive, e.g., "development" or "production" mode, OVMS host and port, etc.
 
 ----
 

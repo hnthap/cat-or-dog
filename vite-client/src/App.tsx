@@ -28,7 +28,7 @@ function App() {
       setFile(selectedFile);
       setImageUrl(URL.createObjectURL(selectedFile));
     } else {
-      alert("Please update a valid image file.");
+      alert("Please upload a valid image file!");
     }
     setPrediction(null);
   };
